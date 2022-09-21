@@ -1,0 +1,64 @@
+esphome:
+  name: esphomeceshi3
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+
+  ap:
+    ssid: "d1mini"
+    password: "12345678"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+  password: "12345678"                     #当进行ota升级时，需要输入的密码
+web_server:
+  port: 80
+  version: 2
+  include_internal: true
+
+http_request:
+  useragent: esphome/$device_name
+  timeout: 2s
+
+
+binary_sensor:                              #二进制传感器
+  - platform: gpio                           #来自你的gpio针脚
+    pin:
+      number: D1                             #针脚是D1
+    name: "震动传感器"
+
+        
+  
+    
+    
+    
+text_sensor:                            #这个可以让你的hass显示你nodemcu联网的信息
+  - platform: wifi_info
+    ip_address:
+      name: 连接IP            #nodemcu的ip地址
+    ssid:
+      name: WIFI SSID          #wifi设备的ssid
+    bssid:
+      name: 路由mac       #wifi设备的mac地址
+
+
+sensor:                                 #传感器
+  - platform: wifi_signal             #这个可以让你的hass显示你nodemcu联网信号强度
+    name: "信号强度"        #名字自取，随意
+    update_interval: 60s              #更新时间，这里为60秒
+
+
+light:
+  - platform: status_led
+    name: "指示灯"
+    pin:
+      number: GPIO2
+      inverted: true
